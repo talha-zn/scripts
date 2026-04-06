@@ -97,5 +97,10 @@ if __name__ == "__main__":
         if data:
             fields = extract_mapper_fields(data["fields"])
             file_label = os.path.splitext(file)[0] 
-            sheet_name = file_label.split('_')[-1]
+            # Extract part after second underscore as sheet name: tool_name_tool_category_dataType -> dataType
+            parts = file_label.split('_')
+            if len(parts) >= 3:
+                sheet_name = '_'.join(parts[2:])  # Everything after second underscore
+            else:
+                sheet_name = parts[-1]  # Fallback to last part
             create_excel_sheet(fields, create_file_name(filetype), file_label, sheet_name)
